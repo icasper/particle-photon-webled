@@ -26,8 +26,8 @@ int webLed(String command){
     return 1;
   }
   else if(command == "off"){
+    blinkState = "off";    
     digitalWrite(led, LOW);
-    blinkState = "off";
     return 1;
   }
   else if(command == "blink"){
