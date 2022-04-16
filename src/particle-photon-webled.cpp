@@ -11,29 +11,54 @@
  * Date         : 15.4.2022
  */
 
+
 void setup();
 void loop();
 int webLed(String command);
-#line 8 "/Volumes/Data-01/Projects/Particle/particle-photon-webled/src/particle-photon-webled.ino"
-int led = D7;
+#line 9 "/Volumes/Data-01/Projects/Particle/particle-photon-webled/src/particle-photon-webled.ino"
+int led7 = D7;
+int led6 = D6;
+String blinkState = "";
 
 void setup() {
-  pinMode(led, OUTPUT);
-  digitalWrite(led, LOW);
+  pinMode(led7, OUTPUT);
+  pinMode(led6, OUTPUT);
+  digitalWrite(led7, LOW);
+  digitalWrite(led6, HIGH);
   Particle.function("webLed", webLed);
+  Particle.variable("blinkState", blinkState);
 }
 
 void loop() {
-  
+
 }
 
 int webLed(String command){
   if(command == "on"){
-    digitalWrite(led, HIGH);
+    blinkState = "off";
+    digitalWrite(led7, HIGH);
+    digitalWrite(led6, LOW);
+    Particle.publish("webLed", "is_on");
     return 1;
   }
   else if(command == "off"){
-    digitalWrite(led, LOW);
+    blinkState = "off";    
+    digitalWrite(led7, LOW);
+    digitalWrite(led6, HIGH);
+    Particle.publish("webLed", "is_off");
+    return 1;
+  }
+  else if(command == "blink"){
+    blinkState = "on";
+    Particle.publish("webLed", "is_blinking");
+    while(blinkState == "on"){
+      digitalWrite(led7, HIGH);
+      digitalWrite(led6, LOW);
+      delay(64ms);
+      digitalWrite(led7, LOW);
+      digitalWrite(led6, HIGH);
+      delay(1000ms);
+    }
     return 1;
   }
   else{
