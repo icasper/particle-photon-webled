@@ -5,6 +5,7 @@
  * Date         : 15.4.2022
  */
 
+
 int led7 = D7;
 int led6 = D6;
 String blinkState = "";
