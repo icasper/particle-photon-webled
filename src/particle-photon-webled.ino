@@ -23,15 +23,18 @@ int webLed(String command){
   if(command == "on"){
     blinkState = "off";
     digitalWrite(led, HIGH);;
+    Particle.publish("webLed", "is_on");
     return 1;
   }
   else if(command == "off"){
     blinkState = "off";    
     digitalWrite(led, LOW);
+    Particle.publish("webLed", "is_off");
     return 1;
   }
   else if(command == "blink"){
     blinkState = "on";
+    Particle.publish("webLed", "is_blinking");
     while(blinkState == "on"){
       digitalWrite(led, HIGH);
       delay(64ms);
